@@ -51,6 +51,10 @@ __date__ = release.date
 __version__ = release.version
 
 #These are import orderwise
+
+from networkx.apis import (
+    graph_only, digraph_only, multigraph_only, multidigraph_only, register
+)
 from networkx.exception import  *
 import networkx.external
 import networkx.utils
@@ -58,7 +62,6 @@ import networkx.utils
 
 import networkx.classes
 from networkx.classes import *
-
 
 import networkx.convert
 from networkx.convert import *

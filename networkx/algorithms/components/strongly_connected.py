@@ -22,6 +22,7 @@ __all__ = ['number_strongly_connected_components',
            'kosaraju_strongly_connected_components',
            'condensation']
 
+@nx.register('digraph','multidigraph')
 def strongly_connected_components(G):
     """Return nodes in strongly connected components of graph.
 
@@ -35,10 +36,6 @@ def strongly_connected_components(G):
     comp : list of lists
        A list of nodes for each component of G.
        The list is ordered from largest connected component to smallest.
-
-    Raises
-    ------
-    NetworkXError: If G is undirected.
 
     See Also
     --------
@@ -58,9 +55,6 @@ def strongly_connected_components(G):
        E. Nuutila and E. Soisalon-Soinen
        Information Processing Letters 49(1): 9-14, (1994)..
     """
-    if not G.is_directed():
-        raise nx.NetworkXError("""Not allowed for undirected graph G. 
-              Use connected_components() """)
     preorder={}
     lowlink={}
     scc_found={}
@@ -104,7 +98,7 @@ def strongly_connected_components(G):
     scc_list.sort(key=len,reverse=True)
     return scc_list
 
-
+@nx.register('digraph','multidigraph')
 def kosaraju_strongly_connected_components(G,source=None):
     """Return nodes in strongly connected components of graph.
 
@@ -119,10 +113,6 @@ def kosaraju_strongly_connected_components(G,source=None):
        A list of nodes for each component of G.
        The list is ordered from largest connected component to smallest.
 
-    Raises
-    ------
-    NetworkXError: If G is undirected
-
     See Also
     --------
     connected_components
@@ -131,9 +121,6 @@ def kosaraju_strongly_connected_components(G,source=None):
     -----
     Uses Kosaraju's algorithm.
     """
-    if not G.is_directed():
-        raise nx.NetworkXError("""Not allowed for undirected graph G. 
-              Use connected_components() """)
     components=[]
     G=G.reverse(copy=False)
     post=list(nx.dfs_postorder_nodes(G,source=source))
@@ -150,7 +137,7 @@ def kosaraju_strongly_connected_components(G,source=None):
     components.sort(key=len,reverse=True)
     return components
 
-
+@nx.register('digraph','multidigraph')
 def strongly_connected_components_recursive(G):
     """Return nodes in strongly connected components of graph.
 
@@ -166,10 +153,6 @@ def strongly_connected_components_recursive(G):
     comp : list of lists
        A list of nodes for each component of G.
        The list is ordered from largest connected component to smallest.
-
-    Raises
-    ------
-    NetworkXError : If G is undirected
 
     See Also
     --------
@@ -206,11 +189,7 @@ def strongly_connected_components_recursive(G):
                 tmpc.append(w)
             stack.remove(v)
             scc.append(tmpc) # add to scc list
-    
-    if not G.is_directed():
-        raise nx.NetworkXError("""Not allowed for undirected graph G. 
-              Use connected_components() """)
-    
+
     scc=[]
     visited={}
     component={}
@@ -224,7 +203,7 @@ def strongly_connected_components_recursive(G):
     scc.sort(key=len,reverse=True)
     return scc
 
-
+@nx.register('digraph','multidigraph')
 def strongly_connected_component_subgraphs(G):
     """Return strongly connected components as subgraphs.
 
@@ -254,7 +233,7 @@ def strongly_connected_component_subgraphs(G):
         graph_list.append(G.subgraph(c).copy())
     return graph_list
 
-
+@nx.register('digraph','multidigraph')
 def number_strongly_connected_components(G):
     """Return number of strongly connected components in graph.
 
@@ -278,7 +257,7 @@ def number_strongly_connected_components(G):
     """
     return len(strongly_connected_components(G))
 
-
+@nx.register('digraph','multidigraph')
 def is_strongly_connected(G):
     """Test directed graph for strong connectivity.
 
@@ -300,16 +279,13 @@ def is_strongly_connected(G):
     -----
     For directed graphs only.
     """
-    if not G.is_directed():
-        raise nx.NetworkXError("""Not allowed for undirected graph G.
-              See is_connected() for connectivity test.""")
-
     if len(G)==0:
         raise nx.NetworkXPointlessConcept(
             """Connectivity is undefined for the null graph.""")
 
     return len(strongly_connected_components(G)[0])==len(G)
 
+@nx.register('digraph','multidigraph')
 def condensation(G, scc=None):
     """Returns the condensation of G.
 
@@ -332,10 +308,6 @@ def condensation(G, scc=None):
        The condensation of G. The node labels are integers corresponding
        to the index of the component in the list of strongly connected
        components.
-
-    Raises
-    ------
-    NetworkXError: If G is not directed
 
     Notes
     -----

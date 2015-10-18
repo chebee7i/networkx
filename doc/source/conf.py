@@ -35,8 +35,8 @@ def cd(newpath):
 
 # Check Sphinx version
 import sphinx
-if sphinx.__version__ < "1.3":
-    raise RuntimeError("Sphinx 1.3 or newer required")
+if sphinx.__version__.startswith("1.3"):
+    raise RuntimeError("Sphinx 1.3 cannot be used.")
 
 # Environment variable to know if the docs are being built on rtd.
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
@@ -73,10 +73,12 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
-    'sphinx.ext.napoleon',
+    #  Disable until we move to Sphinx 1.4
+    #'sphinx.ext.napoleon',
     'sphinx.ext.pngmath',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
+    'sphinxcontrib.napoleon',
     #'sphinxcontrib.bibtex',
     #'IPython.sphinxext.ipython_console_highlighting',
     #'IPython.sphinxext.ipython_directive',
